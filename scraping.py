@@ -2,32 +2,41 @@
 from selenium import webdriver
 import time
 
-path = '/Users/Peterkwok/Downloads/phantomjs-1.9.7-macosx/bin/phantomjs'
+path = '/Users/Peterkwok/Downloads/phantomjs'
 driver = webdriver.PhantomJS(path)
 driver.get('http://flight.qunar.com')
-time.sleep(2)
 
-from_city = driver.find_elements_by_xpath('//form[@id=\'dfsForm\']/div[@class=\'crl_sp_city\']/div')[0]
-input_area = driver.find_element_by_name('fromCity')
-input_area.click()
-input_area.clear()
-input_area.send_keys('beijing')
-time.sleep(2)
-print input_area.text
-suggest_area = from_city.find_elements_by_xpath('//div[@class=\'q-suggest\']/table/tbody/tr')[0]
-print 'suggest: ', suggest_area.text
-suggest_area.click()
+route = driver.find_element_by_class_name('crl_sp_city')
+departure = route.find_elements_by_xpath('div')[0]
+arrival = route.find_elements_by_xpath('div')[1]
 
-to_city = driver.find_elements_by_xpath('//form[@id=\'dfsForm\']/div[@class=\'crl_sp_city\']/div')[1]
-input_area = to_city.find_element_by_name('toCity')
-input_area.click()
-input_area.clear()
-input_area.send_keys('zhengzhou')
+text_area = departure.find_element_by_xpath('div/input')
+text_area.click()
+text_area.send_keys('beijing')
 time.sleep(2)
-print input_area.text
-suggest_area = to_city.find_elements_by_xpath('//div[@class=\'q-suggest\']/table/tbody/tr')[0]
-print 'suggest: ', suggest_area.text
-suggest_area.click()
+suggest_area = departure.find_element_by_class_name('q-suggest')
+suggest_cities = suggest_area.find_elements_by_xpath('table/tbody/tr')
+print 'Selected City : ' + suggest_cities[0].text
+suggest_cities[0].click()
+
+text_area = arrival.find_element_by_xpath('div/input')
+text_area.click()
+text_area.send_keys('hangzhou')
+time.sleep(2)
+suggest_area = arrival.find_element_by_class_name('q-suggest')
+suggest_cities = suggest_area.find_elements_by_xpath('table/tbody/tr')
+print u'Selected City : ' + suggest_cities[0].text
+suggest_cities[0].click()
+
+date = driver.find_element_by_class_name('crl_sp_date')
+text_area = date.find_element_by_id('fromDate')
+text_area.click()
+text_area.clear()
+text_area.send_keys('2015-10-7')
+
+button = driver.find_element_by_class_name('btn_search')
+button.click()
+time.sleep(2)
 
 f = open('result.html', 'w')
 f.write(driver.page_source.encode('utf-8'))
