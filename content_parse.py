@@ -1,11 +1,6 @@
 # -*- coding: UTF-8 -*-
 from bs4 import BeautifulSoup
 import re
-import sys
-
-# 编码不兼容
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 
 def parse_content(name):
@@ -15,7 +10,7 @@ def parse_content(name):
 
     with open('flight.txt', 'a') as f:
         for item in items:
-            f.write(parse_item(item) + '\n')
+            f.write(parse_item(item).encode('utf-8') + '\n')
         f.close()
 
 
