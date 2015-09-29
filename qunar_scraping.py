@@ -74,7 +74,7 @@ class Scraping(object):
             for x in xrange(len(pages) - 1):
                 pages[-1].click()
                 self.scroll_page()
-                print 'store the ' + str(x + 2) + ' page'
+                print 'store the ' + str(x + 2) + ' page ...'
                 with open('result_' + str(x + 2) + '.html', 'w') as f:
                     f.write(self.driver.page_source.encode('utf-8'))
                     f.close()
@@ -83,6 +83,7 @@ class Scraping(object):
 
     def page_parse(self, n):
         for x in xrange(1, n + 1):
+            print 'parse the ' + str(x) + ' page ...'
             file_name = 'result_' + str(x) + '.html'
             content_parse.parse_content(file_name)
 
@@ -90,10 +91,18 @@ class Scraping(object):
         self.driver.quit()
 
     def qunar_scraping(self):
+        print 'opening the page :' + self.url + '...'
+        print 'now input your data ...'
         self.insert_info()
+        print 'you are from ' + self.departure + ' and going to ' + self.arrival + ' at ' + self.date
+        print 'execute querying ...'
         self.execute_query()
+        print 'begin to store the pages ...'
         page_num = self.page_store()
+        print 'now you get ' + str(page_num) + ' pages ...'
+        print 'start to parse the pages ...'
         self.page_parse(page_num)
+        print 'all done!'
         self.destory_driver()
 
 
