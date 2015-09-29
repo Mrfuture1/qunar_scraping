@@ -2,12 +2,18 @@
 from bs4 import BeautifulSoup
 import re
 
-soup = BeautifulSoup(open('result_1.html').read().decode('utf-8'))
-flight_detail = soup.find('div', 'e_fly_lst')
-items = flight_detail.contents
-# contents得到所有的直接子节点
 
-for item in items:
+def parse_content(name):
+    soup = BeautifulSoup(open(name).read().decode('utf-8'), 'lxml')
+    flight_detail = soup.find('div', 'e_fly_lst')
+    items = flight_detail.contents
+    # contents得到所有的直接子节点
+
+    for item in items:
+        print parse_item(item)
+
+
+def parse_item(item):
     per_detail = ''
     air_name = item.find('div', class_='a-name')
     per_detail += u'{:^8}'.format(air_name.text)
@@ -47,5 +53,9 @@ for item in items:
     price_final = ''.join(price_list)
     per_detail += u'{:^6}'.format(price_final)
     # 获取真正的价格
-    print per_detail
 
+    return per_detail
+
+
+if __name__ == '__main__':
+    parse_content('result_1.html')
