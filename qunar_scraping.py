@@ -83,7 +83,7 @@ class Scraping(object):
 
     def page_parse(self, n):
         for x in xrange(1, n + 1):
-            file_name = 'result_' + x + '.html'
+            file_name = 'result_' + str(x) + '.html'
             content_parse.parse_content(file_name)
 
     def destory_driver(self):
@@ -99,7 +99,7 @@ class Scraping(object):
 
 if __name__ == '__main__':
     departure = 'beijing'
-    arrival = 'hangzhou'
+    arrival = 'zhengzhou'
     date = '2015-10-7'
     s = Scraping(departure, arrival, date)
     s.qunar_scraping()
