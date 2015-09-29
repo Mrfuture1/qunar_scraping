@@ -5,6 +5,7 @@ import content_parse
 
 
 class Scraping(object):
+    # 初始化爬虫：设置出发地、目的地、出发时间
     def __init__(self, departure, arrival, date):
         path = '/Users/Peterkwok/Downloads/phantomjs'
         self.url = 'http://flight.qunar.com'
@@ -14,6 +15,7 @@ class Scraping(object):
         self.arrival = arrival
         self.date = date
 
+    # 向网页添加数据
     def insert_info(self):
         self.driver.get(self.url)
         route = self.driver.find_element_by_class_name('crl_sp_city')
@@ -25,6 +27,7 @@ class Scraping(object):
         self.insert_arrival(arrival)
         self.insert_date(date)
 
+    # 添加出发地
     def insert_departure(self, departure):
         text_area = departure.find_element_by_xpath('div/input')
         text_area.click()
@@ -35,6 +38,7 @@ class Scraping(object):
         print 'Selected City : ' + suggest_cities[0].text
         suggest_cities[0].click()
 
+    # 添加目的地
     def insert_arrival(self, arrival):
         text_area = arrival.find_element_by_xpath('div/input')
         text_area.click()
@@ -45,23 +49,27 @@ class Scraping(object):
         print u'Selected City : ' + suggest_cities[0].text
         suggest_cities[0].click()
 
+    # 添加出发时间
     def insert_date(self, date):
         text_area = date.find_element_by_id('fromDate')
         text_area.click()
         text_area.clear()
         text_area.send_keys(self.date)
 
+    # 执行查询
     def execute_query(self):
         button = self.driver.find_element_by_class_name('btn_search')
         button.click()
         time.sleep(2)
 
+    # 滚动页面完成页面的动态加载
     def scroll_page(self):
         flight_subscribe = self.driver.find_element_by_class_name('subenv')
         for x in xrange(5):
             self.driver.execute_script("return arguments[0].scrollIntoView();", flight_subscribe)
             time.sleep(1)
 
+    # 存储结果页面
     def page_store(self):
         self.scroll_page()
         print 'store the ' + str(1) + ' page'
@@ -81,6 +89,7 @@ class Scraping(object):
             return len(pages)
         return 1
 
+    # 进行页面解析
     def page_parse(self, n):
         for x in xrange(1, n + 1):
             print 'parse the ' + str(x) + ' page ...'
@@ -90,6 +99,7 @@ class Scraping(object):
     def destory_driver(self):
         self.driver.quit()
 
+    # 爬虫执行流程
     def qunar_scraping(self):
         print 'opening the page :' + self.url + '...'
         print 'now input your data ...'
@@ -106,6 +116,7 @@ class Scraping(object):
         self.destory_driver()
 
 
+# 进行测试
 if __name__ == '__main__':
     departure = 'beijing'
     arrival = 'zhengzhou'
