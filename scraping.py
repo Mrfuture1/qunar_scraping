@@ -1,6 +1,7 @@
 # coding= utf-8
 from selenium import webdriver
 import time
+import content_parse
 
 path = '/Users/Peterkwok/Downloads/phantomjs'
 driver = webdriver.PhantomJS(path)
@@ -9,6 +10,7 @@ driver.get('http://flight.qunar.com')
 route = driver.find_element_by_class_name('crl_sp_city')
 departure = route.find_elements_by_xpath('div')[0]
 arrival = route.find_elements_by_xpath('div')[1]
+date = driver.find_element_by_class_name('crl_sp_date')
 
 text_area = departure.find_element_by_xpath('div/input')
 text_area.click()
@@ -28,7 +30,6 @@ suggest_cities = suggest_area.find_elements_by_xpath('table/tbody/tr')
 print u'Selected City : ' + suggest_cities[0].text
 suggest_cities[0].click()
 
-date = driver.find_element_by_class_name('crl_sp_date')
 text_area = date.find_element_by_id('fromDate')
 text_area.click()
 text_area.clear()
@@ -43,22 +44,6 @@ flight_subscribe = driver.find_element_by_class_name('subenv')
 for x in xrange(5):
     driver.execute_script("return arguments[0].scrollIntoView();", flight_subscribe)
     time.sleep(1)
-# page_detail = driver.find_element_by_class_name('e_fly_lst')
-# detail_list = page_detail.find_elements_by_xpath('div')
-# detail_num = len(detail_list)
-# print 'detail number : ', detail_num
-#
-# flight_subscribe = driver.find_element_by_class_name('subenv')
-# driver.execute_script("return arguments[0].scrollIntoView();", flight_subscribe)
-# time.sleep(1)
-# detail_list = page_detail.find_elements_by_xpath('div')
-#
-# while len(detail_list) != detail_num:
-#     detail_num = len(detail_list)
-#     driver.execute_script("return arguments[0].scrollIntoView();", flight_subscribe)
-#     time.sleep(1)
-#     detail_list = page_detail.find_elements_by_xpath('div')
-#     print 'detail number : ', len(detail_list)
 
 # 得到所有的结果页面
 print 'store the ' + str(1) + ' page'

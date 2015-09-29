@@ -1,6 +1,9 @@
 # -*- coding: UTF-8 -*-
 from bs4 import BeautifulSoup
 import re
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 def parse_content(name):
@@ -9,8 +12,10 @@ def parse_content(name):
     items = flight_detail.contents
     # contents得到所有的直接子节点
 
-    for item in items:
-        print parse_item(item)
+    with open('flight.txt', 'a') as f:
+        for item in items:
+            f.write(parse_item(item)+'\n')
+        f.close()
 
 
 def parse_item(item):
@@ -58,4 +63,5 @@ def parse_item(item):
 
 
 if __name__ == '__main__':
-    parse_content('result_1.html')
+    parse_content(u'result_1.html')
+    parse_content(u'result_2.html')
